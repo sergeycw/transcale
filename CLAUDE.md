@@ -23,6 +23,14 @@ This is a Chrome extension project built with TypeScript.
 
 ## Project Structure
 - `src/` - TypeScript source files
+  - `content.ts` - Main entry point for content script
+  - `converters.ts` - Unit conversion logic
+  - `constants.ts` - Conversion constants (MI_TO_KM, etc.)
+  - `formatters.ts` - Number formatting utilities
+  - `regexes.ts` - Regular expressions for unit detection
+  - `utils.ts` - Utility functions (shouldSkip, toNumber)
+  - `dom.ts` - DOM manipulation and observation
+  - `sw.ts` - Service worker
 - `dist/` - Compiled output
 - `manifest.json` - Chrome extension manifest
 - `options.html` - Extension options page
@@ -30,5 +38,5 @@ This is a Chrome extension project built with TypeScript.
 ## Next Steps
 - [x] Initialize git repository
 - [x] Remove Cyrillic text from project
-- [ ] Make project more modular
+- [x] Make project more modular
 - [ ] Handle corner cases with existing conversions
