@@ -3,8 +3,9 @@
   "version": "1.0.0",
   "main": "content.js",
   "scripts": {
-    "build": "tsc",
-    "watch": "tsc -w",
+    "build": "esbuild src/content.ts src/sw.ts --bundle --outdir=dist --format=iife --target=chrome88",
+    "build:types": "tsc --noEmit",
+    "watch": "esbuild src/content.ts src/sw.ts --bundle --outdir=dist --format=iife --target=chrome88 --watch",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
     "dev": "npm run build && npm run format"
@@ -15,6 +16,7 @@
   "description": "",
   "devDependencies": {
     "@types/chrome": "^0.1.12",
+    "esbuild": "^0.25.10",
     "prettier": "^3.6.2",
     "typescript": "^5.9.2"
   }

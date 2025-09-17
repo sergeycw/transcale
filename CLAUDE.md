@@ -6,7 +6,8 @@ This is a Chrome extension project built with TypeScript.
 ## Development Workflow
 
 ### Build Commands
-- `npm run build` - Compile TypeScript files
+- `npm run build` - Bundle TypeScript files with esbuild
+- `npm run build:types` - Type check without emitting files
 - `npm run watch` - Watch mode for development (auto-rebuild on changes)
 - `npm run dev` - Build and format code
 - `npm run format` - Format code with Prettier
@@ -39,4 +40,4 @@ This is a Chrome extension project built with TypeScript.
 - [x] Initialize git repository
 - [x] Remove Cyrillic text from project
 - [x] Make project more modular
-- [ ] Handle corner cases with existing conversions
+- [x] Handle corner cases with existing conversions

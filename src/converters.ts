@@ -1,6 +1,13 @@
-import { MI_TO_KM, MPH_TO_KMH, FT_TO_M, IN_TO_CM, FLOZ_TO_ML, OZ_TO_G } from './constants';
+import {
+  MI_TO_KM,
+  MPH_TO_KMH,
+  FT_TO_M,
+  IN_TO_CM,
+  FLOZ_TO_ML,
+  OZ_TO_G,
+} from './constants';
 import { nf, nf1, rangeFormat } from './formatters';
-import { toNumber } from './utils';
+import { toNumber, hasExistingConversion } from './utils';
 import {
   RE_MILE,
   RE_MPH,
@@ -9,7 +16,7 @@ import {
   RE_FLOZ,
   RE_OZ,
   RE_FAH,
-  resetRegexIndices
+  resetRegexIndices,
 } from './regexes';
 
 export function convertInText(str: string): string {
@@ -19,6 +26,7 @@ export function convertInText(str: string): string {
 
   // mi → km
   out = out.replace(RE_MILE, (m, approx, a, dash, b) => {
+    if (hasExistingConversion(str, m)) return m;
     const v1 = toNumber(a);
     if (v1 == null) return m;
     if (b != null) {

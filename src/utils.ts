@@ -18,3 +18,13 @@ export function toNumber(x: string | number): number | null {
   const v = parseFloat(s);
   return Number.isFinite(v) ? v : null;
 }
+
+export function hasExistingConversion(text: string, match: string): boolean {
+  // check if the match already has a conversion in parentheses after it
+  const matchIndex = text.indexOf(match);
+  if (matchIndex === -1) return false;
+
+  const afterMatch = text.substring(matchIndex + match.length).trim();
+  // look for pattern like " (123 km)" or " (123.45 km/h)" etc.
+  return /^\s*\([^)]*(?:km|m|cm|ml|g|°C)\)/.test(afterMatch);
+}
