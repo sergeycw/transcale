@@ -8,7 +8,7 @@ export function shouldSkip(node: Node): boolean {
   )
     return true;
   if (el.isContentEditable) return true;
-  if (el.closest('input, textarea, select, button, a')) return true;
+  if (el.closest('input, textarea, select, button')) return true;
   return false;
 }
 
