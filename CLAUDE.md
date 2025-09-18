@@ -1,11 +1,13 @@
 # Claude Development Guide
 
 ## Project Setup
+
 This is a Chrome extension project built with TypeScript.
 
 ## Development Workflow
 
 ### Build Commands
+
 - `npm run build` - Bundle TypeScript files with esbuild
 - `npm run build:types` - Type check without emitting files
 - `npm run watch` - Watch mode for development (auto-rebuild on changes)
@@ -14,15 +16,18 @@ This is a Chrome extension project built with TypeScript.
 - `npm run format:check` - Check code formatting
 
 ### Testing
+
 - Load the extension in Chrome by going to `chrome://extensions/`
 - Enable "Developer mode"
 - Click "Load unpacked" and select the project directory
 
 ### Code Quality
+
 - Run `npm run format` before committing changes
 - Ensure TypeScript compilation succeeds with `npm run build`
 
 ## Project Structure
+
 - `src/` - TypeScript source files
   - `content.ts` - Main entry point for content script
   - `converters.ts` - Unit conversion logic
@@ -37,6 +42,7 @@ This is a Chrome extension project built with TypeScript.
 - `options.html` - Extension options page
 
 ## Next Steps
+
 - [x] Initialize git repository
 - [x] Remove Cyrillic text from project
 - [x] Make project more modular

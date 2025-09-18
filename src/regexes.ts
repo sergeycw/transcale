@@ -1,22 +1,56 @@
+// Fraction pattern for reuse
+const FRACTION_PATTERN = '[¼½¾⅐⅑⅒⅓⅔⅕⅖⅗⅘⅙⅚⅛⅜⅝⅞]|\\d+/\\d+';
+
+// Number pattern with optional fractions
+const NUMBER_WITH_FRACTION = `\\d+(?:[.,]\\d+)?(?:\\s*(?:${FRACTION_PATTERN}))?|(?:${FRACTION_PATTERN})`;
+
 // basic regexes (support ranges 8-10, approximation ~, fractions, °F)
-export const RE_MILE =
-  /\b(~?\s*)?(\d+(?:[.,]\d+)?)(\s*[-–—]\s*(\d+(?:[.,]\d+)?))?\s*(mi|mile|miles)\b/g;
+export const RE_MILE = new RegExp(
+  `\\b(~?\\s*)?(${NUMBER_WITH_FRACTION})(\\s*[-–—]\\s*(${NUMBER_WITH_FRACTION}))?\\s*(mi|mile|miles)\\b`,
+  'g'
+);
 
-export const RE_MPH =
-  /\b(~?\s*)?(\d+(?:[.,]\d+)?)(\s*[-–—]\s*(\d+(?:[.,]\d+)?))?\s*(mph)\b/g;
+export const RE_MPH = new RegExp(
+  `\\b(~?\\s*)?(${NUMBER_WITH_FRACTION})(\\s*[-–—]\\s*(${NUMBER_WITH_FRACTION}))?\\s*(mph)\\b`,
+  'g'
+);
 
-export const RE_FT =
-  /\b(~?\s*)?(\d+(?:[.,]\d+)?)(\s*[-–—]\s*(\d+(?:[.,]\d+)?))?\s*(ft|feet)\b/g;
+export const RE_FT = new RegExp(
+  `\\b(~?\\s*)?(${NUMBER_WITH_FRACTION})(\\s*[-–—]\\s*(${NUMBER_WITH_FRACTION}))?\\s*(ft|feet)\\b`,
+  'g'
+);
 
-export const RE_IN = /(\d+(?:[.,]\d+)?)\s*(?:in|″|")\b/g; // simplified; word "in" as preposition is not touched - needs numeric context
+export const RE_IN = new RegExp(
+  `(${NUMBER_WITH_FRACTION})\\s*(?:in|″|")\\b`,
+  'g'
+);
 
-export const RE_FLOZ =
-  /\b(~?\s*)?(\d+(?:[.,]\d+)?)(\s*[-–—]\s*(\d+(?:[.,]\d+)?))?\s*(fl\.?\s*oz\.?|fluid\s+ounce|fluid\s+ounces)\b/g;
+export const RE_FLOZ = new RegExp(
+  `\\b(~?\\s*)?(${NUMBER_WITH_FRACTION})(\\s*[-–—]\\s*(${NUMBER_WITH_FRACTION}))?\\s*(fl\\.?\\s*oz\\.?|fluid\\s+ounce|fluid\\s+ounces)\\b`,
+  'g'
+);
 
-export const RE_OZ =
-  /\b(~?\s*)?(\d+(?:[.,]\d+)?)(\s*[-–—]\s*(\d+(?:[.,]\d+)?))?\s*(oz\.?|ounce|ounces)(?!\s*\.)/g; // avoid fl.oz
+export const RE_OZ = new RegExp(
+  `\\b(~?\\s*)?(${NUMBER_WITH_FRACTION})(\\s*[-–—]\\s*(${NUMBER_WITH_FRACTION}))?\\s*(oz\\.?|ounce|ounces)(?!\\s*\\.)`,
+  'g'
+);
 
-export const RE_FAH = /\b(-?\d+(?:[.,]\d+)?)\s*°\s*F\b/g;
+export const RE_FAH = new RegExp(
+  `\\b(-?${NUMBER_WITH_FRACTION})\\s*°\\s*F\\b`,
+  'g'
+);
+
+// Feet and inches combinations like 5'10" or 5 ft 10 in
+export const RE_FEET_INCHES = new RegExp(
+  `\\b(${NUMBER_WITH_FRACTION})\\s*(?:'|ft|feet)\\s*(${NUMBER_WITH_FRACTION})\\s*(?:"|″|in|inch|inches)\\b`,
+  'g'
+);
+
+// Dimensions like "12 x 8 in" or "3 × 2 ft"
+export const RE_DIMENSIONS = new RegExp(
+  `\\b(${NUMBER_WITH_FRACTION})\\s*[×x]\\s*(${NUMBER_WITH_FRACTION})(?:\\s*[×x]\\s*(${NUMBER_WITH_FRACTION}))?\\s*(in|inch|inches|ft|feet|cm|mm)\\b`,
+  'g'
+);
 
 export function resetRegexIndices(): void {
   // reset global regex indices for safety
@@ -27,4 +61,6 @@ export function resetRegexIndices(): void {
   RE_FLOZ.lastIndex = 0;
   RE_OZ.lastIndex = 0;
   RE_FAH.lastIndex = 0;
+  RE_FEET_INCHES.lastIndex = 0;
+  RE_DIMENSIONS.lastIndex = 0;
 }
