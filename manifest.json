@@ -1,12 +1,12 @@
 {
   "manifest_version": 3,
-  "name": "Unit Autoconverter (US → Metric)",
+  "name": "Unit Autoconverter: US → Metric",
   "version": "0.1.0",
   "description": "Automatically annotates American units on pages with metric equivalents.",
   "permissions": ["storage"],
   "host_permissions": ["<all_urls>"],
   "action": {
-    "default_title": "Unit Autoconverter"
+    "default_title": "Unit Autoconverter: US → Metric"
   },
   "options_page": "options.html",
   "background": {
