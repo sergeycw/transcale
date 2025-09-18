@@ -69,3 +69,4 @@ This is a Chrome extension project built with TypeScript.
 - [ ] Context-aware recognition ("5 oz" weight vs volume based on context)
 - [ ] Currency-aware conversions ("$5 per gallon" → price per liter)
 - [ ] Cooking recipe intelligence (cups, tablespoons in cooking contexts)
+- each time after task comlition run tests

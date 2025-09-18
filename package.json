@@ -3,9 +3,12 @@
   "version": "1.0.0",
   "main": "content.js",
   "scripts": {
-    "build": "esbuild src/content.ts src/sw.ts --bundle --outdir=dist --format=iife --target=chrome88",
+    "build": "npm test && esbuild src/content.ts src/sw.ts --bundle --outdir=dist --format=iife --target=chrome88",
     "build:types": "tsc --noEmit",
     "watch": "esbuild src/content.ts src/sw.ts --bundle --outdir=dist --format=iife --target=chrome88 --watch",
+    "test": "jest",
+    "test:watch": "jest --watch",
+    "test:coverage": "jest --coverage",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
     "dev": "npm run build && npm run format"
@@ -16,8 +19,14 @@
   "description": "",
   "devDependencies": {
     "@types/chrome": "^0.1.12",
+    "@types/jest": "^30.0.0",
+    "@types/jsdom": "^21.1.7",
     "esbuild": "^0.25.10",
+    "jest": "^30.1.3",
+    "jest-environment-jsdom": "^30.1.2",
+    "jsdom": "^27.0.0",
     "prettier": "^3.6.2",
+    "ts-jest": "^29.4.3",
     "typescript": "^5.9.2"
   }
 }
