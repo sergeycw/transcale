@@ -15,11 +15,15 @@ describe('Unit Converter Extension - Working Test Suite', () => {
       expect(convertInText('Temperature is 72°F')).toContain('22.2 °C');
       expect(convertInText('Package weighs 4 oz')).toContain('113.4 g');
       expect(convertInText('Add 8 fl oz')).toContain('236.59 ml');
+      expect(convertInText('Weight is 5 pounds')).toContain('2.27 kg');
+      expect(convertInText('Weighs 2.5 lbs')).toContain('1.13 kg');
     });
 
     test('converts ranges', () => {
       expect(convertInText('Distance: 5-10 miles')).toContain('8.05–16.09 km');
       expect(convertInText('Speed: 25-35 mph')).toContain('40.23–56.33 km/h');
+      expect(convertInText('Weight: 2-5 pounds')).toContain('0.91–2.27 kg');
+      expect(convertInText('Package: 3-7 lbs')).toContain('1.36–3.18 kg');
     });
 
     test('converts MPG', () => {
@@ -170,13 +174,14 @@ describe('Unit Converter Extension - Working Test Suite', () => {
 
     test('comprehensive text conversion', () => {
       const input =
-        'Drive 25 miles at 60 mph, temperature 75°F, carrying 5 oz package.';
+        'Drive 25 miles at 60 mph, temperature 75°F, carrying 5 oz package weighing 10 pounds.';
       const result = convertInText(input);
 
       expect(result).toContain('40.23 km');
       expect(result).toContain('96.56 km/h');
       expect(result).toContain('23.9 °C');
       expect(result).toContain('141.75 g');
+      expect(result).toContain('4.54 kg');
     });
   });
 });

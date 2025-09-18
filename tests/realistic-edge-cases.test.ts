@@ -553,4 +553,49 @@ describe('Realistic Edge Case Testing', () => {
       expect(convertedSpans.length).toBe(1);
     });
   });
+
+  describe('Pounds conversion tests', () => {
+    test('converts various pound formats', () => {
+      expect(convertInText('Item weighs 1 pound')).toBe('Item weighs 1 pound (0.45 kg)');
+      expect(convertInText('Package is 2 pounds')).toBe('Package is 2 pounds (0.91 kg)');
+      expect(convertInText('Weight: 5 lbs')).toBe('Weight: 5 lbs (2.27 kg)');
+      expect(convertInText('Total: 10 lbs.')).toBe('Total: 10 lbs. (4.54 kg)');
+      expect(convertInText('Weighs 3.5 pounds')).toBe('Weighs 3.5 pounds (1.59 kg)');
+    });
+
+    test('converts pound ranges', () => {
+      expect(convertInText('Weight: 2-5 pounds')).toBe('Weight: 2-5 pounds (0.91–2.27 kg)');
+      expect(convertInText('Package: 3-7 lbs')).toBe('Package: 3-7 lbs (1.36–3.18 kg)');
+      expect(convertInText('Range: 1.5-2.5 lb')).toBe('Range: 1.5-2.5 lb (0.68–1.13 kg)');
+    });
+
+    test('preserves existing pound conversions', () => {
+      const textWithConversion = 'Weight: 5 pounds (2.27 kg)';
+      expect(convertInText(textWithConversion)).toBe(textWithConversion);
+    });
+
+    test('handles approximation symbols with pounds', () => {
+      expect(convertInText('Weight: ~3 pounds')).toContain('(1.36 kg)');
+      expect(convertInText('Approximately 4.5 lbs')).toContain('(2.04 kg)');
+    });
+
+    test('pounds with fractions', () => {
+      expect(convertInText('Weight: 2½ pounds')).toContain('(1.13 kg)');
+      expect(convertInText('Package: 3¼ lbs')).toContain('(1.47 kg)');
+    });
+
+    test('pounds edge cases', () => {
+      expect(convertInText('Weight: 0 pounds')).toBe('Weight: 0 pounds (0 kg)');
+      expect(convertInText('Heavy: 100 lbs')).toBe('Heavy: 100 lbs (45.36 kg)');
+      expect(convertInText('Light: 0.5 pound')).toBe('Light: 0.5 pound (0.23 kg)');
+    });
+
+    test('pounds in DOM scenarios', () => {
+      document.body.innerHTML = '<p>Package weighs 15 pounds</p>';
+      walkAndAnnotate(document.body);
+
+      const convertedSpan = document.querySelector('.uconv');
+      expect(convertedSpan?.textContent).toContain('6.8 kg');
+    });
+  });
 });

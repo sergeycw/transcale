@@ -35,6 +35,11 @@ export const RE_OZ = new RegExp(
   'g'
 );
 
+export const RE_LB = new RegExp(
+  `\\b(~?\\s*)?(${NUMBER_WITH_FRACTION})(\\s*[-–—]\\s*(${NUMBER_WITH_FRACTION}))?\\s*(lbs?\\.?|pounds|pound)\\b`,
+  'g'
+);
+
 export const RE_FAH = new RegExp(
   `\\b(-?${NUMBER_WITH_FRACTION})\\s*°\\s*F\\b`,
   'g'
@@ -60,6 +65,7 @@ export function resetRegexIndices(): void {
   RE_IN.lastIndex = 0;
   RE_FLOZ.lastIndex = 0;
   RE_OZ.lastIndex = 0;
+  RE_LB.lastIndex = 0;
   RE_FAH.lastIndex = 0;
   RE_FEET_INCHES.lastIndex = 0;
   RE_DIMENSIONS.lastIndex = 0;

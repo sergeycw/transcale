@@ -5,6 +5,7 @@ import {
   IN_TO_CM,
   FLOZ_TO_ML,
   OZ_TO_G,
+  LB_TO_KG,
 } from './constants';
 import { nf, nf1, rangeFormat } from './formatters';
 import { toNumber, hasExistingConversion } from './utils';
@@ -15,6 +16,7 @@ import {
   RE_IN,
   RE_FLOZ,
   RE_OZ,
+  RE_LB,
   RE_FAH,
   RE_FEET_INCHES,
   RE_DIMENSIONS,
@@ -113,6 +115,23 @@ export function convertInText(str: string): string {
     } else {
       const g = v1 * OZ_TO_G;
       return `${m} (${nf.format(g)} g)`;
+    }
+  });
+
+  // Pounds to kilograms
+  out = out.replace(RE_LB, (m, approx, a, dash, b) => {
+    if (hasExistingConversion(str, m)) return m;
+    const v1 = toNumber(a);
+    if (v1 == null) return m;
+    if (b != null) {
+      const v2 = toNumber(b);
+      if (v2 == null) return m;
+      const kg1 = v1 * LB_TO_KG,
+        kg2 = v2 * LB_TO_KG;
+      return `${m} (${rangeFormat(kg1, kg2, 'kg')})`;
+    } else {
+      const kg = v1 * LB_TO_KG;
+      return `${m} (${nf.format(kg)} kg)`;
     }
   });
 
