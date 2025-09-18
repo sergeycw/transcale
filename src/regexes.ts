@@ -31,7 +31,7 @@ export const RE_FLOZ = new RegExp(
 );
 
 export const RE_OZ = new RegExp(
-  `\\b(~?\\s*)?(${NUMBER_WITH_FRACTION})(\\s*[-–—]\\s*(${NUMBER_WITH_FRACTION}))?\\s*(oz\\.?|ounce|ounces)(?!\\s*\\.)`,
+  `\\b(~?\\s*)?(${NUMBER_WITH_FRACTION})(\\s*[-–—]\\s*(${NUMBER_WITH_FRACTION}))?\\s*(oz\\.?|ounces|ounce)(?!\\s*\\.)`,
   'g'
 );
 

@@ -63,8 +63,14 @@ describe('Realistic Edge Case Testing', () => {
       expect('8 oz.'.match(RE_OZ)?.[0]).toBe('8 oz.');
       expect('2 ounce'.match(RE_OZ)?.[0]).toBe('2 ounce');
       expect('2-4 oz'.match(RE_OZ)?.[0]).toBe('2-4 oz');
-      // Note: "ounces" matches as "ounce" due to regex design
-      expect('6 ounces'.match(RE_OZ)?.[0]).toBe('6 ounce');
+      expect('6 ounces'.match(RE_OZ)?.[0]).toBe('6 ounces');
+    });
+
+    test('ounces conversion bug reproduction', () => {
+      // This test reproduces the bug where "ounces" becomes "ounce (weight)s"
+      const result = convertInText('Weight: 4.3 ounces');
+      expect(result).not.toContain('ounce (121.9 g)s'); // Should not have this bug
+      expect(result).toBe('Weight: 4.3 ounces (121.9 g)'); // Should be this instead
     });
 
     test('fahrenheit pattern edge cases', () => {
