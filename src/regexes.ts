@@ -41,7 +41,7 @@ export const RE_LB = new RegExp(
 );
 
 export const RE_FAH = new RegExp(
-  `\\b(-?${NUMBER_WITH_FRACTION})\\s*°\\s*F\\b`,
+  `(-?${NUMBER_WITH_FRACTION})\\s*°\\s*F\\b`,
   'g'
 );
 
