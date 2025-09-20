@@ -63,7 +63,7 @@ export function convertInText(str: string): string {
 
   // Feet to meters
   out = out.replace(RE_FT, (m, approx, a, dash, b) => {
-    if (hasExistingConversion(str, m)) return m;
+    if (hasExistingConversion(out, m)) return m;
     const v1 = toNumber(a);
     if (v1 == null) return m;
     if (b != null) {
@@ -80,6 +80,7 @@ export function convertInText(str: string): string {
 
   // Inches to centimeters
   out = out.replace(RE_IN, (m, a) => {
+    if (hasExistingConversion(out, m)) return m;
     const v = toNumber(a);
     if (v == null) return m;
     const cm = v * IN_TO_CM;
@@ -104,6 +105,7 @@ export function convertInText(str: string): string {
 
   // Ounces to grams
   out = out.replace(RE_OZ, (m, approx, a, dash, b) => {
+    if (hasExistingConversion(out, m)) return m;
     const v1 = toNumber(a);
     if (v1 == null) return m;
     if (b != null) {
@@ -120,7 +122,7 @@ export function convertInText(str: string): string {
 
   // Pounds to kilograms
   out = out.replace(RE_LB, (m, approx, a, dash, b) => {
-    if (hasExistingConversion(str, m)) return m;
+    if (hasExistingConversion(out, m)) return m;
     const v1 = toNumber(a);
     if (v1 == null) return m;
     if (b != null) {
@@ -145,17 +147,13 @@ export function convertInText(str: string): string {
 
   // Feet and inches combinations
   out = out.replace(RE_FEET_INCHES, (match, ...args) => {
-    return convertFeetInches(out, [match, ...args] as RegExpMatchArray);
+    return convertFeetInches(str, [match, ...args] as RegExpMatchArray);
   });
 
   // Dimensions
   out = out.replace(RE_DIMENSIONS, (match, ...args) => {
-    return convertDimensions(out, [match, ...args] as RegExpMatchArray);
+    return convertDimensions(str, [match, ...args] as RegExpMatchArray);
   });
-
-  // Compound units
-  out = convertPoundOunce(out);
-  out = convertFootInch(out);
 
   // Miles per gallon to liters per 100km
   out = convertMPG(out);
@@ -164,10 +162,7 @@ export function convertInText(str: string): string {
 }
 
 // Convert feet and inches to meters
-function convertFeetInches(
-  text: string,
-  match: RegExpMatchArray
-): string {
+function convertFeetInches(text: string, match: RegExpMatchArray): string {
   const feet = toNumber(match[1]);
   const inches = toNumber(match[2]);
 
@@ -185,10 +180,7 @@ function convertFeetInches(
 }
 
 // Convert dimensions
-function convertDimensions(
-  text: string,
-  match: RegExpMatchArray
-): string {
+function convertDimensions(text: string, match: RegExpMatchArray): string {
   const dim1 = toNumber(match[1]);
   const dim2 = toNumber(match[2]);
   const dim3 = match[3] ? toNumber(match[3]) : null;
@@ -221,52 +213,6 @@ function convertDimensions(
   }
 
   return text.replace(match[0], `${match[0]} (${conversion})`);
-}
-
-// Convert compound pound-ounce measurements
-function convertPoundOunce(text: string): string {
-  const regex =
-    /\b(\d+(?:[.,]\d+)?)\s*(?:lbs?|pounds?)\s+(\d+(?:[.,]\d+)?)\s*(?:oz|ounces?)\b/g;
-
-  return text.replace(regex, (match, lbStr, ozStr) => {
-    const pounds = toNumber(lbStr);
-    const ounces = toNumber(ozStr);
-
-    if (pounds === null || ounces === null) return match;
-
-    const totalOunces = pounds * 16 + ounces;
-    const kg = totalOunces * 0.0283495;
-
-    if (kg >= 1) {
-      return `${match} (${nf.format(kg)} kg)`;
-    } else {
-      const grams = kg * 1000;
-      return `${match} (${nf.format(grams)} g)`;
-    }
-  });
-}
-
-// Convert compound foot-inch measurements
-function convertFootInch(text: string): string {
-  const regex =
-    /\b(\d+(?:[.,]\d+)?)\s*(?:ft|feet)\s+(\d+(?:[.,]\d+)?)\s*(?:in|inch|inches)\b/g;
-
-  return text.replace(regex, (match, ftStr, inStr) => {
-    const feet = toNumber(ftStr);
-    const inches = toNumber(inStr);
-
-    if (feet === null || inches === null) return match;
-
-    const totalInches = feet * 12 + inches;
-    const meters = totalInches * IN_TO_CM * 0.01; // convert cm to m
-
-    if (meters >= 1) {
-      return `${match} (${nf.format(meters)} m)`;
-    } else {
-      const cm = meters * 100;
-      return `${match} (${nf.format(cm)} cm)`;
-    }
-  });
 }
 
 // Convert MPG to L/100km

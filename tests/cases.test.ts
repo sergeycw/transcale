@@ -46,15 +46,24 @@ describe('Unit Converter - Core Functionality', () => {
       expect(convertInText('Car gets 30 mpg')).toContain('7.84 L/100km');
     });
 
-    test('converts compound units', () => {
-      expect(convertInText('Baby weighs 8 lb 4 oz')).toContain('3.63 kg');
-      expect(convertInText('Height: 6 ft 2 in')).toContain('1.83 m');
+    test('converts compound units separately', () => {
+      // 8 lb = 3.63 kg, 4 oz = 113.4 g - convert each unit separately
+      expect(convertInText('Baby weighs 8 lb 4 oz')).toBe(
+        'Baby weighs 8 lb (3.63 kg) 4 oz (113.4 g)'
+      );
+      // 6 ft = 1.83 m, 2 in = 5.08 cm - convert each unit separately
+      expect(convertInText('Height: 6 ft 2 in')).toBe(
+        'Height: 6 ft (1.83 m) 2 in (5.08 cm)'
+      );
     });
 
     test('handles edge cases', () => {
       expect(convertInText('Distance: 0 miles')).toContain('0 km');
       expect(convertInText('Length: 5.5 feet')).toContain('1.68 m');
-      expect(convertInText('Temperature: -10°F')).toContain('°C');
+      // -10°F = (-10-32)*5/9 = -42*5/9 = -23.3°C
+      expect(convertInText('Temperature: -10°F')).toBe(
+        'Temperature: -10°F (-23.3 °C)'
+      );
     });
 
     test('preserves existing conversions', () => {
@@ -654,13 +663,32 @@ describe('Unit Converter - Bug Fixes', () => {
         'Weight: 4 ounces (113.4 g)'
       );
     });
+
+    test('ounces regex prioritizes longest match first', () => {
+      // Test that "ounces" is captured as whole word, not "ounce" + "s"
+      expect(convertInText('Container holds 4 ounces')).toBe(
+        'Container holds 4 ounces (113.4 g)'
+      );
+      expect(convertInText('Package weighs 8 ounces')).toBe(
+        'Package weighs 8 ounces (226.8 g)'
+      );
+      expect(convertInText('Item is 12 ounces')).toBe(
+        'Item is 12 ounces (340.19 g)'
+      );
+    });
   });
 
   describe('Negative Temperature Fix', () => {
     test('converts negative fahrenheit temperatures correctly', () => {
-      expect(convertInText('Temperature: -10°F')).toBe('Temperature: -10°F (-23.3 °C)');
-      expect(convertInText('It was -20°F outside')).toBe('It was -20°F (-28.9 °C) outside');
-      expect(convertInText('Freezer set to -5°F')).toBe('Freezer set to -5°F (-20.6 °C)');
+      expect(convertInText('Temperature: -10°F')).toBe(
+        'Temperature: -10°F (-23.3 °C)'
+      );
+      expect(convertInText('It was -20°F outside')).toBe(
+        'It was -20°F (-28.9 °C) outside'
+      );
+      expect(convertInText('Freezer set to -5°F')).toBe(
+        'Freezer set to -5°F (-20.6 °C)'
+      );
     });
   });
 
@@ -668,7 +696,7 @@ describe('Unit Converter - Bug Fixes', () => {
     test('handles table cell with quote and fraction', () => {
       document.body.innerHTML = '<td class="c-table-row-wide">9"<br>1/16</td>';
 
-      // Before conversion - should not convert this complex case yet
+      // Before conversion - should not convert this complex case yetи
       walkAndAnnotate(document.body);
       const convertedSpan = document.querySelector('.uconv');
 

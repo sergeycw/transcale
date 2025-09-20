@@ -81,5 +81,5 @@ export function hasExistingConversion(text: string, match: string): boolean {
 
   const afterMatch = text.substring(matchIndex + match.length).trim();
   // look for pattern like " (123 km)" or " (123.45 km/h)" etc.
-  return /^\s*\([^)]*(?:km|m|cm|ml|g|°C)\)/.test(afterMatch);
+  return /^\s*\([^)]*(?:km|kg|m|cm|ml|g|°C)\)/.test(afterMatch);
 }
