@@ -1,0 +1,24 @@
+{
+  "manifest_version": 3,
+  "name": "Unit Autoconverter: US → Metric",
+  "version": "0.1.0",
+  "description": "Automatically annotates American units on pages with metric equivalents.",
+  "permissions": ["activeTab", "storage"],
+  "action": {
+    "default_title": "Unit Autoconverter: US → Metric"
+  },
+  "options_page": "options.html",
+  "background": {
+    "service_worker": "sw.js"
+  },
+  "content_scripts": [
+    {
+      "matches": [
+        "http://*/*",
+        "https://*/*"
+      ],
+      "js": ["content.js"],
+      "run_at": "document_idle"
+    }
+  ]
+}
